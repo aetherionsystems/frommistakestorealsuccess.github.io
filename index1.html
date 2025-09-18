@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>From Mistakes to REAL Success</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <style>
+        /* --- Estilos Generales y Variables --- */
+       :root {
+            --primary-color: #e40046;
+            --secondary-color: #9d2235;
+            --background-color: #f4f7f9;
+            --text-color: #333;
+            --light-text-color: #ecf0f1;
+            --card-background: #ffffff;
+            --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --glow-color: #76232f;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            line-height: 1.8;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            overflow-x: hidden; /* Previene el desbordamiento horizontal por animaciones */
+        }
+        
+        /* --- Scrollbar Personalizado --- */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--background-color);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 5px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #2980b9;
+        }
+
+        /* --- Barra de Progreso --- */
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 5px;
+            background: var(--primary-color);
+            width: 0%;
+            z-index: 100;
+            transition: width 0.1s linear;
+        }
+
+        /* --- Cabecera (Hero Section) --- */
+        .hero {
+            position: relative;
+            height: 70vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: var(--light-text-color);
+            background-image: url('1.png');
+            background-size: 110%;
+            background-position: center;
+            overflow: hidden;
+            animation: kenBurns 20s infinite alternate;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        .hero-cursor-light {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0) 60%);
+            border-radius: 50%;
+            pointer-events: none;
+            transition: transform 0.1s ease-out;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+        }
+        
+        .hero:hover .hero-cursor-light {
+            opacity: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            padding: 20px;
+        }
+
+        .hero h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+        }
+
+        .hero h1 .char {
+            opacity: 0;
+            transform: translateY(20px) scale(0.8);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        .post-meta {
+            font-size: 1rem;
+            font-style: italic;
+            opacity: 0;
+            animation: fadeIn 1s 1.5s forwards; /* Aumentado el retraso */
+        }
+        
+        /* --- Contenedor del Blog --- */
+        .blog-container {
+            max-width: 850px;
+            margin: -100px auto 50px;
+            position: relative;
+            z-index: 2;
+            padding: 0 20px;
+        }
+        
+        /* --- Secciones (Tarjetas) --- */
+        .blog-section {
+            background: var(--card-background);
+            padding: 40px;
+            margin-bottom: 30px;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+        
+        .blog-section:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px var(--glow-color);
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .blog-section h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2rem;
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--primary-color);
+            display: inline-block;
+        }
+        
+        .blog-section h2 i {
+            margin-right: 15px;
+            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+        
+        .blog-section:hover h2 i {
+            transform: rotate(360deg);
+        }
+
+        /* Estilo para los nuevos subtítulos */
+        .blog-section h3 {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--primary-color);
+            font-size: 1.4rem;
+            margin-top: 25px;
+            margin-bottom: 10px;
+        }
+
+        /* --- Footer --- */
+        footer {
+            background-color: var(--secondary-color);
+            color: var(--light-text-color);
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 50px;
+        }
+
+        /* --- Animaciones Keyframes --- */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes kenBurns {
+            0% { background-size: 110%; background-position: center center; }
+            100% { background-size: 100%; background-position: top left; }
+        }
+
+        /* --- Diseño Responsivo --- */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            .hero {
+                height: 60vh;
+            }
+            .blog-container {
+                margin-top: -80px;
+            }
+            .blog-section {
+                padding: 30px;
+            }
+            .blog-section:hover {
+                transform: translateY(-5px);
+            }
+            .hero-cursor-light {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <div id="progress-bar"></div>
+
+    <header class="hero">
+        <div class="hero-cursor-light"></div>
+        <div class="hero-content">
+            <h1 id="main-title">From Mistakes to REAL Success</h1>
+            <div class="post-meta">
+                <span>From: <strong>Daniel Romero Marin</strong></span> | 
+                <span>Fecha de Publicación: <strong>17 de Septiembre de 2025</strong></span>
+            </div>
+        </div>
+    </header>
+
+    <main class="blog-container">
+        <section class="blog-section">
+            <h2 class="reveal"><i class="fas fa-flag-checkered"></i> Introduction</h2>
+            <p class="reveal">
+                Have you ever tried to speak a new language and it felt like everyone else was speaking in a secret code? That was me! I remember the first time I tried to speak English in a real conversation. My mind just went completely blank! I was so nervous that I think I forgot my own name for a second. I mixed up super simple words and probably sounded like a baby robot. But you know what? It was actually the start of a super cool adventure. I learned that being perfect is boring and learning a language is really about making friends, laughing at silly mistakes, and discovering new things, like awesome movies and video games! Let me tell you about my journey with English, all the super funny (and embarrassing!) things that happened, and the secret tricks that helped me level up!
+            </p>
+        </section>
+
+        <section class="blog-section">
+            <h2 class="reveal"><i class="fas fa-puzzle-piece"></i> Challenges: The REALLY Hard Stuff!</h2>
+            
+            <h3 class="reveal">Pronunciation Nightmares</h3>
+            <p class="reveal">
+                Man, when I first started, some things felt impossible. My mouth did NOT want to make the right sounds. I remember trying to tell my friend's dad that I liked his "ship," but I said "sheep." He looked so confused, and I pointed to his little model boat. He started laughing and said, "Oh, the *ship*!" We practiced saying "shhhhip" with a long sound and "sheep" with a short sound. It was awkward but now I'll never forget it. Also, the "TH" sound was my enemy! I would say "I tink" instead of "I think," and my friends would gently tease me. It’s a super weird sound to make!
+            </p>
+
+            <h3 class="reveal">The Blur of Fast Talking</h3>
+            <p class="reveal">
+                The worst was trying to understand people when they talked fast. I would sit in a café, and two friends would be chatting about a new video game, and it sounded like "buzz-buzz-english-buzz-game-buzz-whoosh." I could only catch one or two words. I would just nod my head like I understood, but inside my brain was just static. It made me feel like I was a million miles away from everyone else, even when I was sitting right there.
+            </p>
+            
+            <h3 class="reveal">Secret Codes (aka Slang and Idioms)</h3>
+            <p class="reveal">
+                This was a huge surprise! People use phrases that don't mean what they say. The first time someone said, "Wow, it's raining cats and dogs," I actually looked out the window to see if there were animals falling from the sky! My friend had to explain it just meant it was raining really hard. It’s like learning a whole second secret language inside of English!
+            </p>
+        </section>
+
+        <section class="blog-section">
+            <h2 class="reveal"><i class="fas fa-lightbulb"></i> Strategies and Experiences: My Level-Up Plan!</h2>
+
+            <h3 class="reveal">Movies and YouTubers Were My Teachers</h3>
+            <p class="reveal">
+                This was the best strategy ever! I started watching my favorite animated movies in English. At first, I used subtitles in my language. Then, I got brave and switched to English subtitles. It was so cool to see the words and hear them at the same time. I started learning funny lines and repeating them. Soon, I moved on to watching YouTubers who played games like Minecraft and Roblox. They talk a little more normally and use a lot of slang, so it was amazing practice for understanding real people.
+            </p>
+
+            <h3 class="reveal">Finding a Language Buddy</h3>
+            <p class="reveal">
+                I joined an online group where you can find a "language exchange" partner. I was super shy at first, but I found a kid my age from California! We would video chat for an hour every week. For 30 minutes, we only spoke English (and I was SO slow), and for the next 30 minutes, we only spoke my language. It was hilarious to hear him try to speak my language! He made just as many mistakes as I did, which made me feel so much better. We didn't just talk about grammar; we talked about our favorite pizza toppings, music, and school. We’re actually good friends now!
+            </p>
+
+            <h3 class="reveal">Learning with Music and Apps</h3>
+            <p class="reveal">
+                I downloaded a couple of apps that had games for learning new words. They gave you points and had flashy lights when you got something right, which made my brain happy. It felt like playing, not studying. I also started listening to pop songs in English. I would find the lyrics online and try to sing along. Most of the time I had no idea what I was singing about, but it was amazing for my pronunciation and for learning new words in a fun way.
+            </p>
+        </section>
+        
+        <section class="blog-section">
+            <h2 class="reveal"><i class="fas fa-laugh-beam"></i> Funny Moments: My Epic Fails!</h2>
+            
+            <h3 class="reveal">The "Nice Fish" Compliment</h3>
+            <p class="reveal">
+                I have a huge list of embarrassing moments, but these are my favorites because they ended in laughs. I was at a friend's party and I wanted to tell her older sister that she looked nice. I think I was trying to say, "You have a nice face," but what came out was, "You have a nice fish!" She just stared at me for a second, totally confused, and then burst out laughing. Everyone started laughing, and I turned super red. But then she gave me a high-five and said, "Thanks! I'll name him Bob." It taught me that if you can laugh at yourself, a mistake isn't so bad.
+            </p>
+            
+            <h3 class="reveal">The Confusing Sandwich Order</h3>
+            <p class="reveal">
+                I was at a restaurant and I really wanted a turkey sandwich. When the waiter came, I tried to say "sandwich," but it came out sounding something like "sahnd-weeesh." He leaned in and said, "I'm sorry, what was that?" I tried again, even slower, and it sounded even weirder. Finally, I just pointed at the menu. He smiled and said, "Oh, a *sandwich*!" He said it really clearly for me. We both had a little laugh, and he helped me say it the right way. Now I can order sandwiches like a pro!
+            </p>
+        </section>
+
+        <section class="blog-section">
+            <h2 class="reveal"><i class="fas fa-rocket"></i> Conclusion: The Adventure Continues!</h2>
+            <p class="reveal">
+                So, am I perfect at English now? No way! I still make mistakes all the time. But the difference is that now, I'm not scared. I’m actually proud of how far I've come. I can watch movies without any subtitles, I can chat with my friend from California, and I can even understand most of the jokes in English TV shows!
+            </p>
+            <p class="reveal">
+                Learning a language is exactly like leveling up in a video game. You start at Level 1, and it's tough. You fail some missions (my mistakes), but every time you talk to someone or learn a new word, you get experience points (XP). Every mistake is just a chance to learn something new and get more XP. So if you're learning a new language, please don't be afraid to mess up! Be silly, say the wrong word, and laugh about it. The real goal isn't to be perfect, it's to connect with amazing people and have a ton of fun on the way. Happy learning, everyone!
+            </p>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Daniel Romero Marin | 2025 Aetherion Systems. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const progressBar = document.getElementById('progress-bar');
+            function updateProgressBar() {
+                const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+                const scrollPercent = (scrollTop / (scrollHeight - clientHeight)) * 100;
+                progressBar.style.width = `${scrollPercent}%`;
+            }
+            window.addEventListener('scroll', updateProgressBar);
+
+            const hero = document.querySelector('.hero');
+            const light = document.querySelector('.hero-cursor-light');
+            if (window.matchMedia("(pointer: fine)").matches) { // Only run on devices with a mouse
+                hero.addEventListener('mousemove', e => {
+                    const rect = hero.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    light.style.transform = `translate(${x}px, ${y}px)`;
+                });
+            }
+            
+            const title = document.getElementById('main-title');
+            const text = title.textContent;
+            title.innerHTML = '';
+            text.split('').forEach((char, index) => {
+                const span = document.createElement('span');
+                span.className = 'char';
+                span.textContent = char === ' ' ? '\u00A0' : char;
+                span.style.transitionDelay = `${index * 0.035}s`;
+                title.appendChild(span);
+            });
+
+            setTimeout(() => {
+                document.querySelectorAll('#main-title .char').forEach(span => {
+                    span.style.opacity = '1';
+                    span.style.transform = 'translateY(0) scale(1)';
+                });
+            }, 100);
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        // Apply a staggered delay for a nicer effect
+                        entry.target.style.transitionDelay = `${index * 0.05}s`;
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+
+            const elementsToReveal = document.querySelectorAll('.reveal');
+            elementsToReveal.forEach(el => {
+                observer.observe(el);
+            });
+        });
+    </script>
+
+</body>
+</html>
